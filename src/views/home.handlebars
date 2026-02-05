@@ -1,0 +1,26 @@
+<div>
+
+    <h1>Lista de Libros</h1>
+        <div>
+            <ul>
+            {{#each libros}}
+                <div>
+                <h2 class="book-title">{{this.titulo}}</h2>
+                <img
+                    src="{{this.portada}}"
+                    alt="{{this.titulo}}"
+                    class="book-portada"
+                />
+                <p class="book-autor">{{this.autor}}</p>
+                <p class="book-categoria">{{this.categoria}}</p>
+                <p class="book-genero">{{this.genero}}</p>
+                </div>
+            {{/each}}
+            </ul>
+        <div>
+            {{#each links}}
+                <a href="{{this.link}}">{{this.text}}</a>
+            {{/each}}
+        </div>
+    </div>
+</div>
