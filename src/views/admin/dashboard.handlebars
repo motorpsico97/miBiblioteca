@@ -1,0 +1,73 @@
+<link rel="stylesheet" href="/css/dashboard.css">
+
+<div class="content">
+    <div class="dashboard-header">
+        <h2>Gestión de Libros</h2>
+        <a href="/admin/books/create" class="btn-add">
+            + Agregar Nuevo Libro
+        </a>
+    </div>
+
+    {{#if success}}
+    <div class="alert alert-success">{{success}}</div>
+    {{/if}}
+
+    {{#if pagination}}
+    <p class="pagination-info">
+        Total: {{pagination.totalDocs}} libros | Página {{pagination.page}} de {{pagination.totalPages}}
+    </p>
+    {{/if}}
+
+    {{#if libros.length}}
+    <table class="books-table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th class="center">Año</th>
+                <th>Editorial</th>
+                <th class="center">Estado</th>
+                <th class="center">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each libros}}
+            <tr>
+                <td>{{titulo}}</td>
+                <td>{{autor}}</td>
+                <td class="center">{{año}}</td>
+                <td>{{editorial}}</td>
+                <td class="center">
+                    <span class="status-badge status-{{estado}}">{{estado}}</span>
+                </td>
+                <td class="center">
+                    <div class="action-buttons">
+                        <a href="/admin/books/edit/{{_id}}" class="btn-edit">Editar</a>
+                        <form action="/admin/books/delete/{{_id}}" method="POST" class="delete-form" onsubmit="return confirm('¿Eliminar este libro?');">
+                            <button type="submit" class="btn-delete">Eliminar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    {{#if pagination}}
+    <div class="pagination">
+        {{#if pagination.hasPrevPage}}
+        <a href="/admin/dashboard?page={{pagination.prevPage}}">← Anterior</a>
+        {{/if}}
+        
+        <span class="current-page">{{pagination.page}}</span>
+        
+        {{#if pagination.hasNextPage}}
+        <a href="/admin/dashboard?page={{pagination.nextPage}}">Siguiente →</a>
+        {{/if}}
+    </div>
+    {{/if}}
+
+    {{else}}
+    <p class="no-books">No hay libros registrados</p>
+    {{/if}}
+</div>

@@ -1,26 +1,58 @@
-<div>
+<link rel="stylesheet" href="/css/home.css">
 
-    <h1>Lista de Libros</h1>
-        <div>
-            <ul>
+<h1 class="page-title">Catálogo de Libros</h1>
+
+<div class="books-container">
+    {{#if libros.length}}
+        <ul class="books-grid">
             {{#each libros}}
-                <div>
-                <h2 class="book-title">{{this.titulo}}</h2>
-                <img
-                    src="{{this.portada}}"
-                    alt="{{this.titulo}}"
-                    class="book-portada"
-                />
-                <p class="book-autor">{{this.autor}}</p>
-                <p class="book-categoria">{{this.categoria}}</p>
-                <p class="book-genero">{{this.genero}}</p>
-                </div>
+                <li class="book-card">
+                    <img
+                        src="{{this.portada}}"
+                        alt="{{this.titulo}}"
+                        class="book-cover"
+                    />
+                    <a href="/libro/{{this._id}}" class="book-link">
+                        <h2 class="book-title">{{this.titulo}}</h2>
+                    </a>
+                    <p class="book-author">{{this.autor}}</p>
+                    {{#if this.año}}
+                    <p class="book-year">📅 {{this.año}}</p>
+                    {{/if}}
+                    {{#if this.categoria}}
+                    <div class="book-categories">
+                        {{#each this.categoria}}
+                            <span class="category-tag">{{this}}</span>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                    {{#if this.genero}}
+                    <div class="book-genres">
+                        {{#each this.genero}}
+                            <span class="genre-tag">{{this}}</span>
+                        {{/each}}
+                    </div>
+                    {{/if}}
+                    {{#if this.estado}}
+                    <div class="book-status">
+                        <span class="status-badge status-{{this.estado}}">{{this.estado}}</span>
+                    </div>
+                    {{/if}}
+                </li>
             {{/each}}
-            </ul>
-        <div>
+        </ul>
+
+        {{#if links}}
+        <div class="pagination-container">
             {{#each links}}
-                <a href="{{this.link}}">{{this.text}}</a>
+                <a href="{{this.link}}" class="pagination-link {{#if this.active}}active{{/if}}">{{this.text}}</a>
             {{/each}}
         </div>
-    </div>
+        {{/if}}
+    {{else}}
+        <div class="empty-state">
+            <h2>📖 No hay libros disponibles</h2>
+            <p>El catálogo está vacío en este momento.</p>
+        </div>
+    {{/if}}
 </div>

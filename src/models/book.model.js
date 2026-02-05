@@ -38,6 +38,11 @@ const boocksSchema = new mongoose.Schema(
             minLength: 3,
             maxLength: 150
         },
+        año: {
+            type: Number,
+            min: 1000,
+            max: new Date().getFullYear() + 1
+        },
         categoria: {
             type: [String],
             required: true,
@@ -62,6 +67,11 @@ const boocksSchema = new mongoose.Schema(
             type: String,
             minLength: 10,
             maxLength: 10000,
+        },
+        estado: {
+            type: String,
+            enum: ['pendiente lectura', 'leyendo', 'finalizado'],
+            default: 'pendiente lectura'
         }
     },
     { timestamps: true }

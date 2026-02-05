@@ -1,0 +1,89 @@
+<link rel="stylesheet" href="/css/book-form.css">
+
+<div class="content">
+    <div class="back-link-container">
+        <a href="/admin/dashboard">← Volver al dashboard</a>
+    </div>
+
+    <h2 class="form-title">{{title}}</h2>
+
+    {{#if error}}
+    <div class="alert alert-error">{{error}}</div>
+    {{/if}}
+
+    <form action="{{action}}" method="POST" class="book-form" enctype="multipart/form-data">
+        <div class="form-row two-cols">
+            <div class="form-field">
+                <label for="titulo">Título *</label>
+                <input type="text" id="titulo" name="titulo" value="{{libro.titulo}}" required>
+            </div>
+            <div class="form-field">
+                <label for="autor">Autor *</label>
+                <input type="text" id="autor" name="autor" value="{{libro.autor}}" required>
+            </div>
+        </div>
+
+        <div class="form-row three-cols">
+            <div class="form-field">
+                <label for="ISBN">ISBN</label>
+                <input type="number" id="ISBN" name="ISBN" value="{{libro.ISBN}}">
+            </div>
+            <div class="form-field">
+                <label for="paginas">Páginas *</label>
+                <input type="number" id="paginas" name="paginas" value="{{libro.paginas}}" required min="1">
+            </div>
+            <div class="form-field">
+                <label for="año">Año de publicación</label>
+                <input type="number" id="año" name="año" value="{{libro.año}}" min="1000" max="2100" placeholder="2024">
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="editorial">Editorial *</label>
+            <input type="text" id="editorial" name="editorial" value="{{libro.editorial}}" required>
+        </div>
+
+        <div class="form-field">
+            <label for="portada">Imagen de Portada *</label>
+            <input type="file" id="portada" name="portada" accept="image/*" {{#unless isEdit}}required{{/unless}}>
+            {{#if libro.portada}}
+            <div class="current-image">
+                <p>Imagen actual:</p>
+                <img src="{{libro.portada}}" alt="Portada actual" style="max-width: 200px; margin-top: 10px;">
+            </div>
+            {{/if}}
+        </div>
+
+        <div class="form-row two-cols">
+            <div class="form-field">
+                <label for="categoria">Categorías * (separadas por comas)</label>
+                <input type="text" id="categoria" name="categoria" value="{{libro.categoriaString}}" required placeholder="Ficción, Aventura">
+            </div>
+            <div class="form-field">
+                <label for="genero">Géneros * (separadas por comas)</label>
+                <input type="text" id="genero" name="genero" value="{{libro.generoString}}" required placeholder="Novela, Clásico">
+            </div>
+        </div>
+
+        <div class="form-field">
+            <label for="estado">Estado de lectura *</label>
+            <select id="estado" name="estado" required>
+                <option value="pendiente lectura" {{#if (eq libro.estado 'pendiente lectura')}}selected{{/if}}>Pendiente de lectura</option>
+                <option value="leyendo" {{#if (eq libro.estado 'leyendo')}}selected{{/if}}>Leyendo</option>
+                <option value="finalizado" {{#if (eq libro.estado 'finalizado')}}selected{{/if}}>Finalizado</option>
+            </select>
+        </div>
+
+        <div class="form-field">
+            <label for="resumen">Resumen</label>
+            <textarea id="resumen" name="resumen" rows="5">{{libro.resumen}}</textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">
+                {{#if isEdit}}Actualizar{{else}}Crear{{/if}} Libro
+            </button>
+            <a href="/admin/dashboard" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</div>

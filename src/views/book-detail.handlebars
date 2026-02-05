@@ -1,0 +1,88 @@
+<link rel="stylesheet" href="/css/book-detail.css">
+
+<div class="book-detail-container">
+    <div class="back-link">
+        <a href="/">← Volver al catálogo</a>
+    </div>
+
+    <div class="book-detail-content">
+        <div class="book-detail-cover">
+            <img src="{{libro.portada}}" alt="{{libro.titulo}}" class="detail-cover-image">
+        </div>
+
+        <div class="book-detail-info">
+            <h1 class="detail-title">{{libro.titulo}}</h1>
+            
+            <div class="detail-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Autor:</span>
+                    <span class="meta-value">{{libro.autor}}</span>
+                </div>
+
+                {{#if libro.año}}
+                <div class="meta-item">
+                    <span class="meta-label">Año:</span>
+                    <span class="meta-value">{{libro.año}}</span>
+                </div>
+                {{/if}}
+
+                {{#if libro.editorial}}
+                <div class="meta-item">
+                    <span class="meta-label">Editorial:</span>
+                    <span class="meta-value">{{libro.editorial}}</span>
+                </div>
+                {{/if}}
+
+                {{#if libro.paginas}}
+                <div class="meta-item">
+                    <span class="meta-label">Páginas:</span>
+                    <span class="meta-value">{{libro.paginas}}</span>
+                </div>
+                {{/if}}
+
+                {{#if libro.ISBN}}
+                <div class="meta-item">
+                    <span class="meta-label">ISBN:</span>
+                    <span class="meta-value">{{libro.ISBN}}</span>
+                </div>
+                {{/if}}
+
+                {{#if libro.estado}}
+                <div class="meta-item">
+                    <span class="meta-label">Estado:</span>
+                    <span class="status-badge status-{{libro.estado}}">{{libro.estado}}</span>
+                </div>
+                {{/if}}
+            </div>
+
+            {{#if libro.categoria}}
+            <div class="detail-section">
+                <h3 class="section-title">Categorías</h3>
+                <div class="tags-container">
+                    {{#each libro.categoria}}
+                        <span class="category-tag">{{this}}</span>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+
+            {{#if libro.genero}}
+            <div class="detail-section">
+                <h3 class="section-title">Géneros</h3>
+                <div class="tags-container">
+                    {{#each libro.genero}}
+                        <span class="genre-tag">{{this}}</span>
+                    {{/each}}
+                </div>
+            </div>
+            {{/if}}
+
+            {{#if libro.resumen}}
+            <div class="detail-section">
+                <h3 class="section-title">Resumen</h3>
+                <p class="detail-summary">{{libro.resumen}}</p>
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</div>
