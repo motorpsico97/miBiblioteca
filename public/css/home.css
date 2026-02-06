@@ -169,9 +169,8 @@
 }
 
 .genre-tag.active {
-    background: #7b68ee;
-    color: white;
-    border-color: #7b68ee;
+    color: #7b68ee;
+    font-weight: 600;
 }
 
 /* Estado de lectura */
