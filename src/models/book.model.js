@@ -65,7 +65,7 @@ const boocksSchema = new mongoose.Schema(
         },
         resumen:{
             type: String,
-            minLength: 10,
+            minLength: 0,
             maxLength: 10000,
         },
         estado: {

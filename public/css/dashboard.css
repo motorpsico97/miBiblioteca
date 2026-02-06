@@ -24,6 +24,75 @@
     background: #229954;
 }
 
+/* Barra de búsqueda */
+.search-bar {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.search-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.search-button {
+    padding: 0.75rem 1.5rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.search-button:hover {
+    background: #2980b9;
+}
+
+.clear-search {
+    padding: 0.75rem 1.25rem;
+    background: #95a5a6;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.clear-search:hover {
+    background: #7f8c8d;
+}
+
+.search-results-info {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
 .pagination-info {
     color: #7f8c8d;
     margin-bottom: 1.5rem;
@@ -160,4 +229,46 @@
     background: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .search-form {
+        flex-wrap: wrap;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+
+    .search-button,
+    .clear-search {
+        flex: 1;
+    }
+
+    .books-table {
+        font-size: 0.85rem;
+    }
+
+    .books-table th,
+    .books-table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .btn-edit,
+    .btn-delete {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.8rem;
+    }
 }

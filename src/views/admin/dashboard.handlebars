@@ -12,6 +12,31 @@
     <div class="alert alert-success">{{success}}</div>
     {{/if}}
 
+    <div class="search-bar">
+        <form action="/admin/dashboard" method="GET" class="search-form">
+            <input 
+                type="text" 
+                name="search" 
+                class="search-input" 
+                placeholder="Buscar por título, autor, editorial, categoría, género, estado..."
+                value="{{search}}"
+            >
+            <button type="submit" class="search-button">🔍 Buscar</button>
+            {{#if search}}
+            <a href="/admin/dashboard" class="clear-search">✕ Limpiar</a>
+            {{/if}}
+        </form>
+        {{#if search}}
+        <p class="search-results-info">
+            {{#if libros.length}}
+                Mostrando {{libros.length}} resultado(s) para "{{search}}"
+            {{else}}
+                No se encontraron resultados para "{{search}}"
+            {{/if}}
+        </p>
+        {{/if}}
+    </div>
+
     {{#if pagination}}
     <p class="pagination-info">
         Total: {{pagination.totalDocs}} libros | Página {{pagination.page}} de {{pagination.totalPages}}
@@ -56,13 +81,13 @@
     {{#if pagination}}
     <div class="pagination">
         {{#if pagination.hasPrevPage}}
-        <a href="/admin/dashboard?page={{pagination.prevPage}}">← Anterior</a>
+        <a href="/admin/dashboard?page={{pagination.prevPage}}{{#if search}}&search={{search}}{{/if}}">← Anterior</a>
         {{/if}}
         
         <span class="current-page">{{pagination.page}}</span>
         
         {{#if pagination.hasNextPage}}
-        <a href="/admin/dashboard?page={{pagination.nextPage}}">Siguiente →</a>
+        <a href="/admin/dashboard?page={{pagination.nextPage}}{{#if search}}&search={{search}}{{/if}}">Siguiente →</a>
         {{/if}}
     </div>
     {{/if}}

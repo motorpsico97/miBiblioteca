@@ -39,9 +39,26 @@ export const logout = (req, res) => {
 // Mostrar dashboard con lista de libros
 export const showDashboard = async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 10, search = '' } = req.query;
         
-        const librosData = await Libro.paginate({}, { 
+        // Construir query de búsqueda
+        let query = {};
+        
+        if (search && search.trim() !== '') {
+            const searchRegex = new RegExp(search, 'i');
+            query = {
+                $or: [
+                    { titulo: searchRegex },
+                    { autor: searchRegex },
+                    { editorial: searchRegex },
+                    { categoria: searchRegex },
+                    { genero: searchRegex },
+                    { estado: searchRegex }
+                ]
+            };
+        }
+        
+        const librosData = await Libro.paginate(query, { 
             page, 
             limit, 
             lean: true,
@@ -60,7 +77,8 @@ export const showDashboard = async (req, res) => {
                 prevPage: librosData.prevPage,
                 totalDocs: librosData.totalDocs
             },
-            success: req.query.success
+            success: req.query.success,
+            search
         });
     } catch (error) {
         console.error(error);
