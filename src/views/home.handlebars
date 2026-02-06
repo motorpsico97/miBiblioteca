@@ -117,13 +117,14 @@
         <ul class="books-grid">
             {{#each libros}}
                 <li class="book-card">
+                    <a href="/libro/{{this._id}}" class="book-link">
+                        <h2 class="book-title">{{this.titulo}}</h2>
+                    
                     <img
                         src="{{this.portada}}"
                         alt="{{this.titulo}}"
                         class="book-cover"
                     />
-                    <a href="/libro/{{this._id}}" class="book-link">
-                        <h2 class="book-title">{{this.titulo}}</h2>
                     </a>
                     <p class="book-author" data-autor="{{this.autor}}" onclick="toggleFilter('autor', '{{this.autor}}')">{{this.autor}}</p>
                     {{#if this.año}}
