@@ -87,13 +87,22 @@ export const createBook = async (req, res) => {
             libroData.portada = '/img/' + req.file.filename;
         }
         
-        // Convertir categorias de string a array
-        if (typeof libroData.categoria === 'string') {
-            libroData.categoria = libroData.categoria.split(',').map(cat => cat.trim());
+        // Recoger categorías de inputs individuales
+        libroData.categoria = [];
+        for (let i = 1; i <= 4; i++) {
+            const categoria = req.body[`categoria_${i}`];
+            if (categoria && categoria.trim() !== '') {
+                libroData.categoria.push(categoria.trim());
+            }
         }
-        // Convertir generos de string a array
-        if (typeof libroData.genero === 'string') {
-            libroData.genero = libroData.genero.split(',').map(gen => gen.trim());
+        
+        // Recoger géneros de inputs individuales
+        libroData.genero = [];
+        for (let i = 1; i <= 7; i++) {
+            const genero = req.body[`genero_${i}`];
+            if (genero && genero.trim() !== '') {
+                libroData.genero.push(genero.trim());
+            }
         }
         
         const nuevoLibro = new Libro(libroData);
@@ -121,13 +130,8 @@ export const showEditForm = async (req, res) => {
             return res.status(404).send('Libro no encontrado');
         }
         
-        // Convertir arrays a strings para el formulario
-        if (Array.isArray(libro.categoria)) {
-            libro.categoriaString = libro.categoria.join(', ');
-        }
-        if (Array.isArray(libro.genero)) {
-            libro.generoString = libro.genero.join(', ');
-        }
+        // Los arrays ya están listos para usar en el formulario
+        // Handlebars accederá a libro.categoria.[0], libro.categoria.[1], etc.
         
         res.render('admin/book-form', { 
             layout: 'admin',
@@ -160,13 +164,22 @@ export const updateBook = async (req, res) => {
             libroData.portada = '/img/' + req.file.filename;
         }
         
-        // Convertir categorias de string a array
-        if (typeof libroData.categoria === 'string') {
-            libroData.categoria = libroData.categoria.split(',').map(cat => cat.trim());
+        // Recoger categorías de inputs individuales
+        libroData.categoria = [];
+        for (let i = 1; i <= 4; i++) {
+            const categoria = req.body[`categoria_${i}`];
+            if (categoria && categoria.trim() !== '') {
+                libroData.categoria.push(categoria.trim());
+            }
         }
-        // Convertir generos de string a array
-        if (typeof libroData.genero === 'string') {
-            libroData.genero = libroData.genero.split(',').map(gen => gen.trim());
+        
+        // Recoger géneros de inputs individuales
+        libroData.genero = [];
+        for (let i = 1; i <= 7; i++) {
+            const genero = req.body[`genero_${i}`];
+            if (genero && genero.trim() !== '') {
+                libroData.genero.push(genero.trim());
+            }
         }
         
         await Libro.findByIdAndUpdate(req.params.id, libroData, { 

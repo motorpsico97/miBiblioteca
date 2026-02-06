@@ -54,14 +54,26 @@
             {{/if}}
         </div>
 
-        <div class="form-row two-cols">
-            <div class="form-field">
-                <label for="categoria">Categorías * (separadas por comas)</label>
-                <input type="text" id="categoria" name="categoria" value="{{libro.categoriaString}}" required placeholder="Ficción, Aventura">
+        <div class="form-field">
+            <label>Categorías * (máximo 4)</label>
+            <div class="dynamic-inputs">
+                <input type="text" name="categoria_1" value="{{libro.categoria.[0]}}" placeholder="Categoría 1" required>
+                <input type="text" name="categoria_2" value="{{libro.categoria.[1]}}" placeholder="Categoría 2">
+                <input type="text" name="categoria_3" value="{{libro.categoria.[2]}}" placeholder="Categoría 3">
+                <input type="text" name="categoria_4" value="{{libro.categoria.[3]}}" placeholder="Categoría 4">
             </div>
-            <div class="form-field">
-                <label for="genero">Géneros * (separadas por comas)</label>
-                <input type="text" id="genero" name="genero" value="{{libro.generoString}}" required placeholder="Novela, Clásico">
+        </div>
+
+        <div class="form-field">
+            <label>Géneros * (máximo 7)</label>
+            <div class="dynamic-inputs">
+                <input type="text" name="genero_1" value="{{libro.genero.[0]}}" placeholder="Género 1" required>
+                <input type="text" name="genero_2" value="{{libro.genero.[1]}}" placeholder="Género 2">
+                <input type="text" name="genero_3" value="{{libro.genero.[2]}}" placeholder="Género 3">
+                <input type="text" name="genero_4" value="{{libro.genero.[3]}}" placeholder="Género 4">
+                <input type="text" name="genero_5" value="{{libro.genero.[4]}}" placeholder="Género 5">
+                <input type="text" name="genero_6" value="{{libro.genero.[5]}}" placeholder="Género 6">
+                <input type="text" name="genero_7" value="{{libro.genero.[6]}}" placeholder="Género 7">
             </div>
         </div>
 

@@ -2,6 +2,131 @@
 
 <h1 class="page-title">Catálogo de Libros</h1>
 
+<div class="main-layout">
+    <aside class="filters-sidebar">
+        <div class="filters-header">
+            <h2>🔍 Filtros</h2>
+            {{#if categoria}}{{#if genero}}{{#if autor}}
+            <a href="/" class="clear-all-filters">Limpiar todos</a>
+            {{else}}
+            <a href="/" class="clear-all-filters">Limpiar todos</a>
+            {{/if}}{{else}}{{#if autor}}
+            <a href="/" class="clear-all-filters">Limpiar todos</a>
+            {{else}}
+            <a href="/" class="clear-all-filters">Limpiar</a>
+            {{/if}}{{/if}}{{else}}{{#if genero}}{{#if autor}}
+            <a href="/" class="clear-all-filters">Limpiar todos</a>
+            {{else}}
+            <a href="/" class="clear-all-filters">Limpiar</a>
+            {{/if}}{{else}}{{#if autor}}
+            <a href="/" class="clear-all-filters">Limpiar</a>
+            {{/if}}{{/if}}{{/if}}
+        </div>
+
+        <div class="filter-section">
+            <h3>📚 Categorías</h3>
+            <ul class="filter-list">
+                {{#each allCategorias}}
+                <li class="filter-item">
+                    <button 
+                        class="filter-button {{#if (eq ../categoria this)}}active{{/if}}" 
+                        onclick="toggleFilter('categoria', '{{this}}')"
+                    >
+                        {{this}}
+                    </button>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+
+        <div class="filter-section">
+            <h3>🏷️ Géneros</h3>
+            <ul class="filter-list">
+                {{#each allGeneros}}
+                <li class="filter-item">
+                    <button 
+                        class="filter-button {{#if (eq ../genero this)}}active{{/if}}" 
+                        onclick="toggleFilter('genero', '{{this}}')"
+                    >
+                        {{this}}
+                    </button>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </aside>
+
+    <div class="main-content">
+        <div class="search-container">
+    <form action="/" method="GET" class="search-form">
+        <input 
+            type="text" 
+            name="search" 
+            class="search-input" 
+            placeholder="Buscar por título, autor, editorial, categoría, género..."
+            value="{{search}}"
+        >
+        <button type="submit" class="search-button">
+            🔍 Buscar
+        </button>
+        {{#if search}}
+        <a href="/" class="clear-search">✕ Limpiar</a>
+        {{/if}}
+    </form>
+    
+    {{#if categoria}}{{#if genero}}{{#if autor}}
+    <div class="active-filters">
+        <span class="filter-label">Filtros activos:</span>
+        <span class="active-filter">📚 {{categoria}} <button class="remove-filter" onclick="removeFilter('categoria')">✕</button></span>
+        <span class="active-filter">🏷️ {{genero}} <button class="remove-filter" onclick="removeFilter('genero')">✕</button></span>
+        <span class="active-filter">✍️ {{autor}} <button class="remove-filter" onclick="removeFilter('autor')">✕</button></span>
+    </div>
+    {{else}}
+    <div class="active-filters">
+        <span class="filter-label">Filtros activos:</span>
+        <span class="active-filter">📚 {{categoria}} <button class="remove-filter" onclick="removeFilter('categoria')">✕</button></span>
+        <span class="active-filter">🏷️ {{genero}} <button class="remove-filter" onclick="removeFilter('genero')">✕</button></span>
+    </div>
+    {{/if}}{{else}}{{#if autor}}
+    <div class="active-filters">
+        <span class="filter-label">Filtros activos:</span>
+        <span class="active-filter">📚 {{categoria}} <button class="remove-filter" onclick="removeFilter('categoria')">✕</button></span>
+        <span class="active-filter">✍️ {{autor}} <button class="remove-filter" onclick="removeFilter('autor')">✕</button></span>
+    </div>
+    {{else}}
+    <div class="active-filters">
+        <span class="filter-label">Filtros activos:</span>
+        <span class="active-filter">📚 {{categoria}} <button class="remove-filter" onclick="removeFilter('categoria')">✕</button></span>
+    </div>
+    {{/if}}{{/if}}{{else}}{{#if genero}}{{#if autor}}
+    <div class="active-filters">
+        <span class="filter-label">Filtros activos:</span>
+        <span class="active-filter">🏷️ {{genero}} <button class="remove-filter" onclick="removeFilter('genero')">✕</button></span>
+        <span class="active-filter">✍️ {{autor}} <button class="remove-filter" onclick="removeFilter('autor')">✕</button></span>
+    </div>
+    {{else}}
+    <div class="active-filters">
+        <span class="filter-label">Filtros activos:</span>
+        <span class="active-filter">🏷️ {{genero}} <button class="remove-filter" onclick="removeFilter('genero')">✕</button></span>
+    </div>
+    {{/if}}{{else}}{{#if autor}}
+    <div class="active-filters">
+        <span class="filter-label">Filtros activos:</span>
+        <span class="active-filter">✍️ {{autor}} <button class="remove-filter" onclick="removeFilter('autor')">✕</button></span>
+    </div>
+    {{/if}}{{/if}}{{/if}}
+    
+    {{#if search}}
+    <p class="search-results-info">
+        {{#if libros.length}}
+            Mostrando {{libros.length}} resultado(s) para "{{search}}"
+        {{else}}
+            No se encontraron resultados para "{{search}}"
+        {{/if}}
+    </p>
+    {{/if}}
+</div>
+
 <div class="books-container">
     {{#if libros.length}}
         <ul class="books-grid">
@@ -15,21 +140,21 @@
                     <a href="/libro/{{this._id}}" class="book-link">
                         <h2 class="book-title">{{this.titulo}}</h2>
                     </a>
-                    <p class="book-author">{{this.autor}}</p>
+                    <p class="book-author" data-autor="{{this.autor}}" onclick="toggleFilter('autor', '{{this.autor}}')">{{this.autor}}</p>
                     {{#if this.año}}
                     <p class="book-year">📅 {{this.año}}</p>
                     {{/if}}
                     {{#if this.categoria}}
                     <div class="book-categories">
                         {{#each this.categoria}}
-                            <span class="category-tag">{{this}}</span>
+                            <span class="category-tag" data-categoria="{{this}}" onclick="toggleFilter('categoria', '{{this}}')">{{this}}</span>
                         {{/each}}
                     </div>
                     {{/if}}
                     {{#if this.genero}}
                     <div class="book-genres">
                         {{#each this.genero}}
-                            <span class="genre-tag">{{this}}</span>
+                            <span class="genre-tag" data-genero="{{this}}" onclick="toggleFilter('genero', '{{this}}')">{{this}}</span>
                         {{/each}}
                     </div>
                     {{/if}}
@@ -56,3 +181,90 @@
         </div>
     {{/if}}
 </div>
+    </div>
+</div>
+
+<script>
+    // Obtener parámetros actuales de la URL
+    function getUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            search: params.get('search') || '',
+            categoria: params.get('categoria') || '',
+            genero: params.get('genero') || '',
+            autor: params.get('autor') || ''
+        };
+    }
+
+    // Función para alternar filtros
+    function toggleFilter(type, value) {
+        const params = getUrlParams();
+        
+        // Si el filtro ya está activo, quitarlo; si no, agregarlo
+        if (params[type] === value) {
+            delete params[type];
+        } else {
+            params[type] = value;
+        }
+        
+        // Construir nueva URL
+        const urlParams = new URLSearchParams();
+        if (params.search) urlParams.set('search', params.search);
+        if (params.categoria) urlParams.set('categoria', params.categoria);
+        if (params.genero) urlParams.set('genero', params.genero);
+        if (params.autor) urlParams.set('autor', params.autor);
+        urlParams.set('limit', '20');
+        urlParams.set('page', '1');
+        
+        // Redirigir
+        window.location.href = '/?' + urlParams.toString();
+    }
+
+    // Función para remover un filtro específico
+    function removeFilter(type) {
+        const params = getUrlParams();
+        delete params[type];
+        
+        const urlParams = new URLSearchParams();
+        if (params.search) urlParams.set('search', params.search);
+        if (params.categoria) urlParams.set('categoria', params.categoria);
+        if (params.genero) urlParams.set('genero', params.genero);
+        if (params.autor) urlParams.set('autor', params.autor);
+        urlParams.set('limit', '20');
+        urlParams.set('page', '1');
+        
+        window.location.href = '/?' + urlParams.toString();
+    }
+
+    // Marcar visualmente las etiquetas activas
+    document.addEventListener('DOMContentLoaded', function() {
+        const params = getUrlParams();
+        
+        // Marcar categoría activa
+        if (params.categoria) {
+            document.querySelectorAll('.category-tag').forEach(tag => {
+                if (tag.dataset.categoria === params.categoria) {
+                    tag.classList.add('active');
+                }
+            });
+        }
+        
+        // Marcar género activo
+        if (params.genero) {
+            document.querySelectorAll('.genre-tag').forEach(tag => {
+                if (tag.dataset.genero === params.genero) {
+                    tag.classList.add('active');
+                }
+            });
+        }
+        
+        // Marcar autor activo
+        if (params.autor) {
+            document.querySelectorAll('.book-author').forEach(author => {
+                if (author.dataset.autor === params.autor) {
+                    author.classList.add('active');
+                }
+            });
+        }
+    });
+</script>

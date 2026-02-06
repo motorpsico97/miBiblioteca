@@ -48,9 +48,9 @@ const boocksSchema = new mongoose.Schema(
             required: true,
             validate: {
                 validator: function(v) {
-                    return v.length <= 7;
+                    return v.length <= 4;
                 },
-                message: 'El libro no puede tener más de 7 categorías'
+                message: 'El libro no puede tener más de 4 categorías'
             }
         },
         genero: {
@@ -58,9 +58,9 @@ const boocksSchema = new mongoose.Schema(
             required: true,
             validate: {
                 validator: function(v) {
-                    return v.length <= 4;
+                    return v.length <= 7;
                 },
-                message: 'El libro no puede tener más de 4 géneros'
+                message: 'El libro no puede tener más de 7 géneros'
             }
         },
         resumen:{
