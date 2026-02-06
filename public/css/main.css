@@ -1,6 +1,6 @@
 /* Estilos generales del sitio público - Inspirado en Lectulandia */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +8,8 @@
 }
 
 body {
-    font-family: "Roboto", Arial;
+    /* font-family: "Roboto", Arial; */
+    font-family: "EB Garamond", serif;
     background: #fafafa;
     min-height: 100vh;
     color: #333;
@@ -132,39 +133,3 @@ body {
     padding: 0 1.5rem;
 }
 
-/* Footer */
-.main-footer {
-    background: #fafafa;
-    padding: 2rem;
-    text-align: center;
-    margin-top: 4rem;
-    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
-    border-top: 1px solid #e5e5e5;
-}
-
-.footer-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    color: #777;
-    font-size: 0.9rem;
-}
-
-.footer-content p {
-    margin: 0.5rem 0;
-}
-
-.footer-links {
-    margin-top: 1rem;
-}
-
-.footer-links a {
-    color: #7b68ee;
-    text-decoration: none;
-    margin: 0 1rem;
-    transition: color 0.2s;
-    font-size: 0.9rem;
-}
-
-.footer-links a:hover {
-    color: #5a4ebb;
-}

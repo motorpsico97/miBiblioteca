@@ -39,7 +39,17 @@ export const logout = (req, res) => {
 // Mostrar dashboard con lista de libros
 export const showDashboard = async (req, res) => {
     try {
-        const { page = 1, limit = 10, search = '' } = req.query;
+        const { page = 1, limit = 10, search = '', sort = '' } = req.query;
+        
+        // Configurar ordenamiento
+        let sortOptions = {};
+        if (sort === 'az') {
+            sortOptions = { titulo: 1 };
+        } else if (sort === 'za') {
+            sortOptions = { titulo: -1 };
+        } else {
+            sortOptions = { createdAt: -1 };
+        }
         
         // Construir query de búsqueda
         let query = {};
@@ -62,7 +72,7 @@ export const showDashboard = async (req, res) => {
             page, 
             limit, 
             lean: true,
-            sort: { createdAt: -1 }
+            sort: sortOptions
         });
         
         res.render('admin/dashboard', { 
@@ -78,7 +88,9 @@ export const showDashboard = async (req, res) => {
                 totalDocs: librosData.totalDocs
             },
             success: req.query.success,
-            search
+            search,
+            limit,
+            sort
         });
     } catch (error) {
         console.error(error);

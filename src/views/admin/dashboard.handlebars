@@ -44,6 +44,15 @@
     {{/if}}
 
     {{#if libros.length}}
+    <div class="sort-container">
+        <label for="sort-selector-admin">Ordenar por:</label>
+        <select id="sort-selector-admin" class="sort-selector" onchange="changeSortAdmin(this.value)">
+            <option value="" {{#unless sort}}selected{{/unless}}>Por defecto (Más recientes)</option>
+            <option value="az" {{#if (eq sort "az")}}selected{{/if}}>A - Z</option>
+            <option value="za" {{#if (eq sort "za")}}selected{{/if}}>Z - A</option>
+        </select>
+    </div>
+    
     <table class="books-table">
         <thead>
             <tr>
@@ -79,15 +88,31 @@
     </table>
 
     {{#if pagination}}
+    <div class="limit-selector-container">
+        <label for="limit-selector-admin">Libros por página:</label>
+        <select id="limit-selector-admin" class="limit-selector" onchange="changeLimitAdmin(this.value)">
+            <option value="10" {{#if (eq limit "10")}}selected{{/if}}>10</option>
+            <option value="20" {{#if (eq limit "20")}}selected{{/if}}>20</option>
+            <option value="30" {{#if (eq limit "30")}}selected{{/if}}>30</option>
+            <option value="40" {{#if (eq limit "40")}}selected{{/if}}>40</option>
+        </select>
+    </div>
+    
     <div class="pagination">
         {{#if pagination.hasPrevPage}}
-        <a href="/admin/dashboard?page={{pagination.prevPage}}{{#if search}}&search={{search}}{{/if}}">← Anterior</a>
+        <a href="/admin/dashboard?page=1{{#if search}}&search={{search}}{{/if}}{{#if sort}}&sort={{sort}}{{/if}}&limit={{limit}}" class="pagination-btn">⏮ Inicio</a>
+        <a href="/admin/dashboard?page={{pagination.prevPage}}{{#if search}}&search={{search}}{{/if}}{{#if sort}}&sort={{sort}}{{/if}}&limit={{limit}}" class="pagination-btn">← Anterior</a>
+        {{else}}
+        <span class="pagination-btn disabled">⏮ Inicio</span>
+        <span class="pagination-btn disabled">← Anterior</span>
         {{/if}}
         
-        <span class="current-page">{{pagination.page}}</span>
+        <span class="current-page">Página {{pagination.page}} de {{pagination.totalPages}}</span>
         
         {{#if pagination.hasNextPage}}
-        <a href="/admin/dashboard?page={{pagination.nextPage}}{{#if search}}&search={{search}}{{/if}}">Siguiente →</a>
+        <a href="/admin/dashboard?page={{pagination.nextPage}}{{#if search}}&search={{search}}{{/if}}{{#if sort}}&sort={{sort}}{{/if}}&limit={{limit}}" class="pagination-btn">Siguiente →</a>
+        {{else}}
+        <span class="pagination-btn disabled">Siguiente →</span>
         {{/if}}
     </div>
     {{/if}}
@@ -96,3 +121,33 @@
     <p class="no-books">No hay libros registrados</p>
     {{/if}}
 </div>
+
+<script>
+    function changeSortAdmin(newSort) {
+        const params = new URLSearchParams(window.location.search);
+        const search = params.get('search') || '';
+        const limit = params.get('limit') || '10';
+        
+        const urlParams = new URLSearchParams();
+        if (search) urlParams.set('search', search);
+        if (limit) urlParams.set('limit', limit);
+        if (newSort) urlParams.set('sort', newSort);
+        urlParams.set('page', '1');
+        
+        window.location.href = '/admin/dashboard?' + urlParams.toString();
+    }
+    
+    function changeLimitAdmin(newLimit) {
+        const params = new URLSearchParams(window.location.search);
+        const search = params.get('search') || '';
+        const sort = params.get('sort') || '';
+        
+        const urlParams = new URLSearchParams();
+        if (search) urlParams.set('search', search);
+        if (sort) urlParams.set('sort', sort);
+        urlParams.set('limit', newLimit);
+        urlParams.set('page', '1');
+        
+        window.location.href = '/admin/dashboard?' + urlParams.toString();
+    }
+</script>

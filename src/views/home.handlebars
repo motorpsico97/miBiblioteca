@@ -6,7 +6,7 @@
     <aside class="filters-sidebar">
         <div class="filters-header">
             <h2>🔍 Filtros</h2>
-            {{#if categoria}}{{#if genero}}{{#if autor}}
+            {{#if categorias.length}}{{#if generos.length}}{{#if autor}}
             <a href="/" class="clear-all-filters">Limpiar todos</a>
             {{else}}
             <a href="/" class="clear-all-filters">Limpiar todos</a>
@@ -14,7 +14,7 @@
             <a href="/" class="clear-all-filters">Limpiar todos</a>
             {{else}}
             <a href="/" class="clear-all-filters">Limpiar</a>
-            {{/if}}{{/if}}{{else}}{{#if genero}}{{#if autor}}
+            {{/if}}{{/if}}{{else}}{{#if generos.length}}{{#if autor}}
             <a href="/" class="clear-all-filters">Limpiar todos</a>
             {{else}}
             <a href="/" class="clear-all-filters">Limpiar</a>
@@ -29,7 +29,9 @@
                 {{#each allCategorias}}
                 <li class="filter-item">
                     <button 
-                        class="filter-button {{#if (eq ../categoria this)}}active{{/if}}" 
+                        class="filter-button" 
+                        data-filter-type="categoria"
+                        data-filter-value="{{this}}"
                         onclick="toggleFilter('categoria', '{{this}}')"
                     >
                         {{this}}
@@ -45,7 +47,9 @@
                 {{#each allGeneros}}
                 <li class="filter-item">
                     <button 
-                        class="filter-button {{#if (eq ../genero this)}}active{{/if}}" 
+                        class="filter-button" 
+                        data-filter-type="genero"
+                        data-filter-value="{{this}}"
                         onclick="toggleFilter('genero', '{{this}}')"
                     >
                         {{this}}
@@ -69,51 +73,43 @@
     </p>
     {{/if}}
     
-    {{#if categoria}}{{#if genero}}{{#if autor}}
+    {{#if categorias.length}}
     <div class="active-filters">
-        <span class="filter-label">Filtros activos:</span>
-        <span class="active-filter">📚 {{categoria}} <button class="remove-filter" onclick="removeFilter('categoria')">✕</button></span>
-        <span class="active-filter">🏷️ {{genero}} <button class="remove-filter" onclick="removeFilter('genero')">✕</button></span>
+        <span class="filter-label">Categorías activas:</span>
+        {{#each categorias}}
+        <span class="active-filter">📚 {{this}} <button class="remove-filter" onclick="removeFilter('categoria', '{{this}}')">✕</button></span>
+        {{/each}}
+    </div>
+    {{/if}}
+    
+    {{#if generos.length}}
+    <div class="active-filters">
+        <span class="filter-label">Géneros activos:</span>
+        {{#each generos}}
+        <span class="active-filter">🏷️ {{this}} <button class="remove-filter" onclick="removeFilter('genero', '{{this}}')">✕</button></span>
+        {{/each}}
+    </div>
+    {{/if}}
+    
+    {{#if autor}}
+    <div class="active-filters">
+        <span class="filter-label">Autor activo:</span>
         <span class="active-filter">✍️ {{autor}} <button class="remove-filter" onclick="removeFilter('autor')">✕</button></span>
     </div>
-    {{else}}
-    <div class="active-filters">
-        <span class="filter-label">Filtros activos:</span>
-        <span class="active-filter">📚 {{categoria}} <button class="remove-filter" onclick="removeFilter('categoria')">✕</button></span>
-        <span class="active-filter">🏷️ {{genero}} <button class="remove-filter" onclick="removeFilter('genero')">✕</button></span>
-    </div>
-    {{/if}}{{else}}{{#if autor}}
-    <div class="active-filters">
-        <span class="filter-label">Filtros activos:</span>
-        <span class="active-filter">📚 {{categoria}} <button class="remove-filter" onclick="removeFilter('categoria')">✕</button></span>
-        <span class="active-filter">✍️ {{autor}} <button class="remove-filter" onclick="removeFilter('autor')">✕</button></span>
-    </div>
-    {{else}}
-    <div class="active-filters">
-        <span class="filter-label">Filtros activos:</span>
-        <span class="active-filter">📚 {{categoria}} <button class="remove-filter" onclick="removeFilter('categoria')">✕</button></span>
-    </div>
-    {{/if}}{{/if}}{{else}}{{#if genero}}{{#if autor}}
-    <div class="active-filters">
-        <span class="filter-label">Filtros activos:</span>
-        <span class="active-filter">🏷️ {{genero}} <button class="remove-filter" onclick="removeFilter('genero')">✕</button></span>
-        <span class="active-filter">✍️ {{autor}} <button class="remove-filter" onclick="removeFilter('autor')">✕</button></span>
-    </div>
-    {{else}}
-    <div class="active-filters">
-        <span class="filter-label">Filtros activos:</span>
-        <span class="active-filter">🏷️ {{genero}} <button class="remove-filter" onclick="removeFilter('genero')">✕</button></span>
-    </div>
-    {{/if}}{{else}}{{#if autor}}
-    <div class="active-filters">
-        <span class="filter-label">Filtros activos:</span>
-        <span class="active-filter">✍️ {{autor}} <button class="remove-filter" onclick="removeFilter('autor')">✕</button></span>
-    </div>
-    {{/if}}{{/if}}{{/if}}
+    {{/if}}
 </div>
 
 <div class="books-container">
     {{#if libros.length}}
+        <div class="sort-container">
+            <label for="sort-selector">Ordenar por:</label>
+            <select id="sort-selector" class="sort-selector" onchange="changeSort(this.value)">
+                <option value="" {{#unless sort}}selected{{/unless}}>Por defecto (Más recientes)</option>
+                <option value="az" {{#if (eq sort "az")}}selected{{/if}}>A - Z</option>
+                <option value="za" {{#if (eq sort "za")}}selected{{/if}}>Z - A</option>
+            </select>
+        </div>
+        
         <ul class="books-grid">
             {{#each libros}}
                 <li class="book-card">
@@ -148,12 +144,46 @@
             {{/each}}
         </ul>
 
-        {{#if links}}
-        <div class="pagination-container">
-            {{#each links}}
-                <a href="{{this.link}}" class="pagination-link {{#if this.active}}active{{/if}}">{{this.text}}</a>
-            {{/each}}
+        {{#if pagination}}
+        <div class="limit-selector-container">
+            <label for="limit-selector">Libros por página:</label>
+            <select id="limit-selector" class="limit-selector" onchange="changeLimit(this.value)">
+                <option value="20" {{#if (eq limit "20")}}selected{{/if}}>20</option>
+                <option value="30" {{#if (eq limit "30")}}selected{{/if}}>30</option>
+                <option value="40" {{#if (eq limit "40")}}selected{{/if}}>40</option>
+            </select>
         </div>
+        
+        <div class="pagination-container">
+            {{#if pagination.hasPrevPage}}
+                <a href="/?page=1{{#if search}}&search={{search}}{{/if}}{{#each categorias}}&categoria={{this}}{{/each}}{{#each generos}}&genero={{this}}{{/each}}{{#if autor}}&autor={{autor}}{{/if}}{{#if sort}}&sort={{sort}}{{/if}}&limit={{limit}}" class="pagination-btn pagination-first">
+                    ⏮ Inicio
+                </a>
+                <a href="/?page={{pagination.prevPage}}{{#if search}}&search={{search}}{{/if}}{{#each categorias}}&categoria={{this}}{{/each}}{{#each generos}}&genero={{this}}{{/each}}{{#if autor}}&autor={{autor}}{{/if}}{{#if sort}}&sort={{sort}}{{/if}}&limit={{limit}}" class="pagination-btn pagination-prev">
+                    ← Anterior
+                </a>
+            {{else}}
+                <span class="pagination-btn pagination-first disabled">⏮ Inicio</span>
+                <span class="pagination-btn pagination-prev disabled">← Anterior</span>
+            {{/if}}
+            
+            {{#if links}}
+            <div class="pagination-pages">
+                {{#each links}}
+                    <a href="{{this.link}}" class="pagination-link {{#if this.active}}active{{/if}}">{{this.text}}</a>
+                {{/each}}
+            </div>
+            {{/if}}
+            
+            {{#if pagination.hasNextPage}}
+                <a href="/?page={{pagination.nextPage}}{{#if search}}&search={{search}}{{/if}}{{#each categorias}}&categoria={{this}}{{/each}}{{#each generos}}&genero={{this}}{{/each}}{{#if autor}}&autor={{autor}}{{/if}}{{#if sort}}&sort={{sort}}{{/if}}&limit={{limit}}" class="pagination-btn pagination-next">
+                    Siguiente →
+                </a>
+            {{else}}
+                <span class="pagination-btn pagination-next disabled">Siguiente →</span>
+            {{/if}}
+        </div>
+        <p class="pagination-info">Página {{pagination.page}} de {{pagination.totalPages}} | Total: {{pagination.totalDocs}} libros</p>
         {{/if}}
     {{else}}
         <div class="empty-state">
@@ -171,30 +201,84 @@
         const params = new URLSearchParams(window.location.search);
         return {
             search: params.get('search') || '',
-            categoria: params.get('categoria') || '',
-            genero: params.get('genero') || '',
-            autor: params.get('autor') || ''
+            categorias: params.getAll('categoria') || [],
+            generos: params.getAll('genero') || [],
+            autor: params.get('autor') || '',
+            limit: params.get('limit') || '20',
+            sort: params.get('sort') || ''
         };
     }
 
-    // Función para alternar filtros
+    // Función para cambiar el ordenamiento
+    function changeSort(newSort) {
+        const params = getUrlParams();
+        const urlParams = new URLSearchParams();
+        
+        if (params.search) urlParams.set('search', params.search);
+        params.categorias.forEach(c => urlParams.append('categoria', c));
+        params.generos.forEach(g => urlParams.append('genero', g));
+        if (params.autor) urlParams.set('autor', params.autor);
+        if (params.limit) urlParams.set('limit', params.limit);
+        if (newSort) urlParams.set('sort', newSort);
+        urlParams.set('page', '1');
+        
+        window.location.href = '/?' + urlParams.toString();
+    }
+
+    // Función para cambiar el límite de libros por página
+    function changeLimit(newLimit) {
+        const params = getUrlParams();
+        const urlParams = new URLSearchParams();
+        
+        if (params.search) urlParams.set('search', params.search);
+        params.categorias.forEach(c => urlParams.append('categoria', c));
+        params.generos.forEach(g => urlParams.append('genero', g));
+        if (params.autor) urlParams.set('autor', params.autor);
+        if (params.sort) urlParams.set('sort', params.sort);
+        urlParams.set('limit', newLimit);
+        urlParams.set('page', '1');
+        
+        window.location.href = '/?' + urlParams.toString();
+    }
+
+    // Función para alternar filtros (múltiples para categoría/género, único para autor)
     function toggleFilter(type, value) {
         const params = getUrlParams();
+        const urlParams = new URLSearchParams();
         
-        // Si el filtro ya está activo, quitarlo; si no, agregarlo
-        if (params[type] === value) {
-            delete params[type];
+        if (type === 'autor') {
+            // Autor: selección única
+            if (params.autor === value) {
+                params.autor = ''; // Quitar si ya está seleccionado
+            } else {
+                params.autor = value; // Reemplazar con el nuevo
+            }
         } else {
-            params[type] = value;
+            // Categoría y Género: múltiples selecciones
+            let array = [];
+            if (type === 'categoria') array = params.categorias;
+            else if (type === 'genero') array = params.generos;
+            
+            // Alternar el valor en el array
+            const index = array.indexOf(value);
+            if (index > -1) {
+                array.splice(index, 1); // Remover si ya existe
+            } else {
+                array.push(value); // Agregar si no existe
+            }
+            
+            // Actualizar params
+            if (type === 'categoria') params.categorias = array;
+            else if (type === 'genero') params.generos = array;
         }
         
         // Construir nueva URL
-        const urlParams = new URLSearchParams();
         if (params.search) urlParams.set('search', params.search);
-        if (params.categoria) urlParams.set('categoria', params.categoria);
-        if (params.genero) urlParams.set('genero', params.genero);
+        params.categorias.forEach(c => urlParams.append('categoria', c));
+        params.generos.forEach(g => urlParams.append('genero', g));
         if (params.autor) urlParams.set('autor', params.autor);
-        urlParams.set('limit', '20');
+        if (params.limit) urlParams.set('limit', params.limit);
+        if (params.sort) urlParams.set('sort', params.sort);
         urlParams.set('page', '1');
         
         // Redirigir
@@ -202,16 +286,31 @@
     }
 
     // Función para remover un filtro específico
-    function removeFilter(type) {
+    function removeFilter(type, value) {
         const params = getUrlParams();
-        delete params[type];
-        
         const urlParams = new URLSearchParams();
+        
+        if (type === 'autor') {
+            // Para autor, simplemente limpiar
+            params.autor = '';
+        } else {
+            // Para categoría y género, remover del array
+            if (type === 'categoria') {
+                const index = params.categorias.indexOf(value);
+                if (index > -1) params.categorias.splice(index, 1);
+            } else if (type === 'genero') {
+                const index = params.generos.indexOf(value);
+                if (index > -1) params.generos.splice(index, 1);
+            }
+        }
+        
+        // Construir nueva URL
         if (params.search) urlParams.set('search', params.search);
-        if (params.categoria) urlParams.set('categoria', params.categoria);
-        if (params.genero) urlParams.set('genero', params.genero);
+        params.categorias.forEach(c => urlParams.append('categoria', c));
+        params.generos.forEach(g => urlParams.append('genero', g));
         if (params.autor) urlParams.set('autor', params.autor);
-        urlParams.set('limit', '20');
+        if (params.limit) urlParams.set('limit', params.limit);
+        if (params.sort) urlParams.set('sort', params.sort);
         urlParams.set('page', '1');
         
         window.location.href = '/?' + urlParams.toString();
@@ -221,29 +320,29 @@
     document.addEventListener('DOMContentLoaded', function() {
         const params = getUrlParams();
         
-        // Marcar categoría activa
-        if (params.categoria) {
-            document.querySelectorAll('.category-tag').forEach(tag => {
-                if (tag.dataset.categoria === params.categoria) {
-                    tag.classList.add('active');
+        // Marcar categorías activas (múltiples)
+        if (params.categorias.length > 0) {
+            document.querySelectorAll('.filter-button[data-filter-type="categoria"]').forEach(button => {
+                if (params.categorias.includes(button.dataset.filterValue)) {
+                    button.classList.add('active');
                 }
             });
         }
         
-        // Marcar género activo
-        if (params.genero) {
-            document.querySelectorAll('.genre-tag').forEach(tag => {
-                if (tag.dataset.genero === params.genero) {
-                    tag.classList.add('active');
+        // Marcar géneros activos (múltiples)
+        if (params.generos.length > 0) {
+            document.querySelectorAll('.filter-button[data-filter-type="genero"]').forEach(button => {
+                if (params.generos.includes(button.dataset.filterValue)) {
+                    button.classList.add('active');
                 }
             });
         }
         
-        // Marcar autor activo
+        // Marcar autor activo (único)
         if (params.autor) {
-            document.querySelectorAll('.book-author').forEach(author => {
-                if (author.dataset.autor === params.autor) {
-                    author.classList.add('active');
+            document.querySelectorAll('.filter-button[data-filter-type="autor"]').forEach(button => {
+                if (button.dataset.filterValue === params.autor) {
+                    button.classList.add('active');
                 }
             });
         }

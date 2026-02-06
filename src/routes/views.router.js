@@ -7,7 +7,11 @@ const viewsRouter = express.Router();
 viewsRouter.get('/', async (req, res, next) => {
     try {
 
-        const {limit = 20, page = 1, search = '', categoria = '', genero = '', autor = ''} = req.query;
+        const {limit = 20, page = 1, search = '', autor = '', sort = ''} = req.query;
+        
+        // Convertir filtros a arrays (solo categoría y género permiten múltiples)
+        let categorias = req.query.categoria ? (Array.isArray(req.query.categoria) ? req.query.categoria : [req.query.categoria]) : [];
+        let generos = req.query.genero ? (Array.isArray(req.query.genero) ? req.query.genero : [req.query.genero]) : [];
         
         // Obtener todas las categorías y géneros únicos
         const allCategorias = await Libro.distinct('categoria');
@@ -16,6 +20,16 @@ viewsRouter.get('/', async (req, res, next) => {
         // Construir query de búsqueda
         let query = {};
         const conditions = [];
+        
+        // Configurar ordenamiento
+        let sortOptions = {};
+        if (sort === 'az') {
+            sortOptions = { titulo: 1 };
+        } else if (sort === 'za') {
+            sortOptions = { titulo: -1 };
+        } else {
+            sortOptions = { createdAt: -1 };
+        }
         
         if (search && search.trim() !== '') {
             // Buscar en múltiples campos
@@ -33,17 +47,17 @@ viewsRouter.get('/', async (req, res, next) => {
             });
         }
 
-        // Filtro por categoría
-        if (categoria && categoria.trim() !== '') {
-            conditions.push({ categoria: categoria });
+        // Filtro por categoría (múltiples selecciones con AND - debe tener TODAS las categorías)
+        if (categorias.length > 0) {
+            conditions.push({ categoria: { $all: categorias } });
         }
 
-        // Filtro por género
-        if (genero && genero.trim() !== '') {
-            conditions.push({ genero: genero });
+        // Filtro por género (múltiples selecciones con AND - debe tener TODOS los géneros)
+        if (generos.length > 0) {
+            conditions.push({ genero: { $all: generos } });
         }
 
-        // Filtro por autor
+        // Filtro por autor (selección única)
         if (autor && autor.trim() !== '') {
             conditions.push({ autor: autor });
         }
@@ -53,7 +67,7 @@ viewsRouter.get('/', async (req, res, next) => {
             query = conditions.length === 1 ? conditions[0] : { $and: conditions };
         }
 
-        const librosData = await Libro.paginate(query, { limit, page, lean: true });
+        const librosData = await Libro.paginate(query, { limit, page, lean: true, sort: sortOptions });
         const libros = librosData.docs;
         delete librosData.docs;
 
@@ -64,9 +78,10 @@ viewsRouter.get('/', async (req, res, next) => {
             params.set('page', index);
             params.set('limit', limit);
             if (search) params.set('search', search);
-            if (categoria) params.set('categoria', categoria);
-            if (genero) params.set('genero', genero);
+            categorias.forEach(c => params.append('categoria', c));
+            generos.forEach(g => params.append('genero', g));
             if (autor) params.set('autor', autor);
+            if (sort) params.set('sort', sort);
             
             links.push({ 
                 text: index, 
@@ -80,9 +95,11 @@ viewsRouter.get('/', async (req, res, next) => {
             links, 
             pagination: librosData, 
             search, 
-            categoria, 
-            genero,
+            categorias,
+            generos,
             autor,
+            limit,
+            sort,
             allCategorias: allCategorias.sort(),
             allGeneros: allGeneros.sort()
         });
