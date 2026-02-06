@@ -57,22 +57,17 @@
     </aside>
 
     <div class="main-content">
-        <div class="search-container">
-    <form action="/" method="GET" class="search-form">
-        <input 
-            type="text" 
-            name="search" 
-            class="search-input" 
-            placeholder="Buscar por título, autor, editorial, categoría, género..."
-            value="{{search}}"
-        >
-        <button type="submit" class="search-button">
-            🔍 Buscar
-        </button>
-        {{#if search}}
-        <a href="/" class="clear-search">✕ Limpiar</a>
+        <div class="filters-info">
+    {{#if search}}
+    <p class="search-results-info">
+        {{#if libros.length}}
+            Mostrando {{libros.length}} resultado(s) para "{{search}}"
+        {{else}}
+            No se encontraron resultados para "{{search}}"
         {{/if}}
-    </form>
+        <a href="/" class="clear-search-inline">✕ Limpiar búsqueda</a>
+    </p>
+    {{/if}}
     
     {{#if categoria}}{{#if genero}}{{#if autor}}
     <div class="active-filters">
@@ -115,16 +110,6 @@
         <span class="active-filter">✍️ {{autor}} <button class="remove-filter" onclick="removeFilter('autor')">✕</button></span>
     </div>
     {{/if}}{{/if}}{{/if}}
-    
-    {{#if search}}
-    <p class="search-results-info">
-        {{#if libros.length}}
-            Mostrando {{libros.length}} resultado(s) para "{{search}}"
-        {{else}}
-            No se encontraron resultados para "{{search}}"
-        {{/if}}
-    </p>
-    {{/if}}
 </div>
 
 <div class="books-container">

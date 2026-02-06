@@ -10,6 +10,19 @@
     <header class="main-header">
         <div class="header-content">
             <h1 class="site-title">📚 Biblioteca Online</h1>
+            <div class="search-nav-container">
+                <form action="/" method="GET" class="nav-search-form">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        class="nav-search-input" 
+                        placeholder="Buscar libros..."
+                    >
+                    <button type="submit" class="nav-search-button">
+                        🔍
+                    </button>
+                </form>
+            </div>
             <nav class="header-nav">
                 <a href="/">Inicio</a>
                 <a href="/admin/login">Admin</a>
@@ -30,5 +43,18 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Preservar el valor de búsqueda en el input del nav
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchValue = urlParams.get('search');
+            const searchInput = document.querySelector('.nav-search-input');
+            
+            if (searchValue && searchInput) {
+                searchInput.value = searchValue;
+            }
+        });
+    </script>
 </body>
 </html>

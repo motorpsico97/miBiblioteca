@@ -10,12 +10,10 @@
 
 /* Layout principal con sidebar */
 .main-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 2.5rem;
-    max-width: 1600px;
+    display: block;
     margin: 0 auto;
     padding: 0 1.5rem 2rem;
+    max-width: 1600px;
 }
 
 /* Sidebar de filtros */
@@ -23,11 +21,13 @@
     background: #f8f9fa;
     border-radius: 8px;
     padding: 1.5rem;
-    position: sticky;
-    top: 20px;
-    height: fit-content;
-    max-height: calc(100vh - 40px);
+    position: fixed;
+    top: 90px;
+    left: 1.5rem;
+    width: 280px;
+    max-height: calc(100vh - 110px);
     overflow-y: auto;
+    z-index: 50;
 }
 
 /* Scrollbar personalizado para el sidebar */
@@ -130,76 +130,37 @@
 
 .main-content {
     min-width: 0;
+    margin-left: calc(280px + 2.5rem);
 }
 
-/* Barra de búsqueda */
-.search-container {
+/* Información de filtros y búsqueda */
+.filters-info {
     max-width: 100%;
     margin: 0 0 2.5rem 0;
     padding: 0;
-}
-
-.search-form {
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.search-input {
-    flex: 1;
-    padding: 0.875rem 1.25rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 25px;
-    font-size: 1rem;
-    transition: border-color 0.2s;
-}
-
-.search-input:focus {
-    outline: none;
-    border-color: #7b68ee;
-}
-
-.search-button {
-    padding: 0.875rem 1.75rem;
-    background: #7b68ee;
-    color: white;
-    border: none;
-    border-radius: 25px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.2s;
-    white-space: nowrap;
-}
-
-.search-button:hover {
-    background: #5a4ebb;
-}
-
-.clear-search {
-    padding: 0.875rem 1.5rem;
-    background: #f5f5f5;
-    color: #666;
-    border: 1px solid #e0e0e0;
-    border-radius: 25px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s;
-    white-space: nowrap;
-}
-
-.clear-search:hover {
-    background: #e0e0e0;
-    color: #333;
 }
 
 .search-results-info {
     text-align: center;
     color: #666;
     font-size: 0.95rem;
-    margin: 0;
+    margin: 0 0 0.75rem 0;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+}
+
+.clear-search-inline {
+    margin-left: 0.5rem;
+    color: #7b68ee;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.clear-search-inline:hover {
+    color: #5a4ebb;
+    text-decoration: underline;
 }
 
 /* Filtros activos */
@@ -472,13 +433,13 @@
 
 /* Responsive */
 @media (max-width: 1200px) {
-    .main-layout {
-        grid-template-columns: 240px 1fr;
-        gap: 1.5rem;
+    .filters-sidebar {
+        width: 240px;
+        padding: 1.25rem;
     }
     
-    .filters-sidebar {
-        padding: 1.25rem;
+    .main-content {
+        margin-left: calc(240px + 1.5rem);
     }
     
     .books-grid {
@@ -493,16 +454,20 @@
 
 @media (max-width: 968px) {
     .main-layout {
-        grid-template-columns: 1fr;
-        gap: 0;
         padding: 0 1rem 2rem;
     }
     
     .filters-sidebar {
         position: relative;
         top: 0;
+        left: auto;
+        width: 100%;
         max-height: none;
         margin-bottom: 2rem;
+    }
+    
+    .main-content {
+        margin-left: 0;
     }
     
     .filter-section {
