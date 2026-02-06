@@ -38,7 +38,7 @@ const boocksSchema = new mongoose.Schema(
             minLength: 3,
             maxLength: 150
         },
-        año: {
+        year: {
             type: Number,
             min: 1000,
             max: new Date().getFullYear() + 1

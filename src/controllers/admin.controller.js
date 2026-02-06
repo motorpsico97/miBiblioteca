@@ -105,6 +105,12 @@ export const createBook = async (req, res) => {
             libroData.portada = '/img/' + req.file.filename;
         }
         
+        // Mapear año a year si viene como año
+        if (libroData.año) {
+            libroData.year = libroData.año;
+            delete libroData.año;
+        }
+        
         // Recoger categorías de inputs individuales
         libroData.categoria = [];
         for (let i = 1; i <= 4; i++) {
@@ -180,6 +186,12 @@ export const updateBook = async (req, res) => {
                 }
             }
             libroData.portada = '/img/' + req.file.filename;
+        }
+        
+        // Mapear año a year si viene como año
+        if (libroData.año) {
+            libroData.year = libroData.año;
+            delete libroData.año;
         }
         
         // Recoger categorías de inputs individuales
