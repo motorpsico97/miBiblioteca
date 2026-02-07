@@ -12,38 +12,45 @@
     {{/if}}
 
     <form action="{{action}}" method="POST" class="book-form" enctype="multipart/form-data">
-        <div class="form-row two-cols">
-            <div class="form-field">
+        <div class="fila-1">
+            <div class="form-titulo">
                 <label for="titulo">Título *</label>
                 <input type="text" id="titulo" name="titulo" value="{{libro.titulo}}" required>
             </div>
-            <div class="form-field">
+            <div class="form-autor">
                 <label for="autor">Autor *</label>
                 <input type="text" id="autor" name="autor" value="{{libro.autor}}" required>
             </div>
+            <div class="form-editorial">
+                <label for="editorial">Editorial *</label>
+                <input type="text" id="editorial" name="editorial" value="{{libro.editorial}}" required>
+            </div>
         </div>
 
-        <div class="form-row three-cols">
-            <div class="form-field">
+        <div class="fila-2">
+            <div class="form-ISBN">
                 <label for="ISBN">ISBN</label>
                 <input type="number" id="ISBN" name="ISBN" value="{{libro.ISBN}}">
             </div>
-            <div class="form-field">
+            <div class="form-paginas">
                 <label for="paginas">Páginas *</label>
                 <input type="number" id="paginas" name="paginas" value="{{libro.paginas}}" required min="1">
             </div>
-            <div class="form-field">
+            <div class="form-year">
                 <label for="year">Año de publicación</label>
                 <input type="number" id="year" name="year" value="{{libro.year}}" min="1000" max="2100" placeholder="2024">
             </div>
+            <div class="form-estado">
+                <label for="estado">Estado de lectura *</label>
+                <select id="estado" name="estado" required>
+                    <option value="pendiente lectura" {{#if (eq libro.estado 'pendiente lectura')}}selected{{/if}}>Pendiente de lectura</option>
+                    <option value="leyendo" {{#if (eq libro.estado 'leyendo')}}selected{{/if}}>Leyendo</option>
+                    <option value="finalizado" {{#if (eq libro.estado 'finalizado')}}selected{{/if}}>Finalizado</option>
+                </select>
+            </div>
         </div>
 
-        <div class="form-field">
-            <label for="editorial">Editorial *</label>
-            <input type="text" id="editorial" name="editorial" value="{{libro.editorial}}" required>
-        </div>
-
-        <div class="form-field">
+        <div class="fila-3">
             <label for="portada">Imagen de Portada *</label>
             <input type="file" id="portada" name="portada" accept="image/*" {{#unless isEdit}}required{{/unless}}>
             {{#if libro.portada}}
@@ -54,44 +61,39 @@
             {{/if}}
         </div>
 
-        <div class="form-field">
-            <label>Categorías * (máximo 4)</label>
-            <div class="dynamic-inputs">
-                <input type="text" name="categoria_1" value="{{libro.categoria.[0]}}" placeholder="Categoría 1" required>
-                <input type="text" name="categoria_2" value="{{libro.categoria.[1]}}" placeholder="Categoría 2">
-                <input type="text" name="categoria_3" value="{{libro.categoria.[2]}}" placeholder="Categoría 3">
-                <input type="text" name="categoria_4" value="{{libro.categoria.[3]}}" placeholder="Categoría 4">
+        <div class="fila-4">
+            <div class="form-categorias">
+                <label>Categorías * <span style="font-weight: normal;">(máximo 4)</span></label>
+                <div class="dynamic-inputs">
+                    <input type="text" name="categoria_1" value="{{libro.categoria.[0]}}" placeholder="Categoría 1" required>
+                    <input type="text" name="categoria_2" value="{{libro.categoria.[1]}}" placeholder="Categoría 2">
+                    <input type="text" name="categoria_3" value="{{libro.categoria.[2]}}" placeholder="Categoría 3">
+                    <input type="text" name="categoria_4" value="{{libro.categoria.[3]}}" placeholder="Categoría 4">
+                </div>
+            </div>
+
+            <div class="form-generos">
+                <label>Géneros * <span style="font-weight: normal;">(máximo 7)</span></label>
+                <div class="dynamic-inputs">
+                    <input type="text" name="genero_1" value="{{libro.genero.[0]}}" placeholder="Género 1" required>
+                    <input type="text" name="genero_2" value="{{libro.genero.[1]}}" placeholder="Género 2">
+                    <input type="text" name="genero_3" value="{{libro.genero.[2]}}" placeholder="Género 3">
+                    <input type="text" name="genero_4" value="{{libro.genero.[3]}}" placeholder="Género 4">
+                    <input type="text" name="genero_5" value="{{libro.genero.[4]}}" placeholder="Género 5">
+                    <input type="text" name="genero_6" value="{{libro.genero.[5]}}" placeholder="Género 6">
+                    <input type="text" name="genero_7" value="{{libro.genero.[6]}}" placeholder="Género 7">
+                </div>
             </div>
         </div>
 
-        <div class="form-field">
-            <label>Géneros * (máximo 7)</label>
-            <div class="dynamic-inputs">
-                <input type="text" name="genero_1" value="{{libro.genero.[0]}}" placeholder="Género 1" required>
-                <input type="text" name="genero_2" value="{{libro.genero.[1]}}" placeholder="Género 2">
-                <input type="text" name="genero_3" value="{{libro.genero.[2]}}" placeholder="Género 3">
-                <input type="text" name="genero_4" value="{{libro.genero.[3]}}" placeholder="Género 4">
-                <input type="text" name="genero_5" value="{{libro.genero.[4]}}" placeholder="Género 5">
-                <input type="text" name="genero_6" value="{{libro.genero.[5]}}" placeholder="Género 6">
-                <input type="text" name="genero_7" value="{{libro.genero.[6]}}" placeholder="Género 7">
-            </div>
-        </div>
+        
 
-        <div class="form-field">
-            <label for="estado">Estado de lectura *</label>
-            <select id="estado" name="estado" required>
-                <option value="pendiente lectura" {{#if (eq libro.estado 'pendiente lectura')}}selected{{/if}}>Pendiente de lectura</option>
-                <option value="leyendo" {{#if (eq libro.estado 'leyendo')}}selected{{/if}}>Leyendo</option>
-                <option value="finalizado" {{#if (eq libro.estado 'finalizado')}}selected{{/if}}>Finalizado</option>
-            </select>
-        </div>
-
-        <div class="form-field">
+        <div class="fila-6">
             <label for="resumen">Resumen</label>
             <textarea id="resumen" name="resumen" rows="5">{{libro.resumen}}</textarea>
         </div>
 
-        <div class="form-actions">
+        <div class="fila-7">
             <button type="submit" class="btn-submit">
                 {{#if isEdit}}Actualizar{{else}}Crear{{/if}} Libro
             </button>
