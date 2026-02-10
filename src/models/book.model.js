@@ -79,7 +79,6 @@ const boocksSchema = new mongoose.Schema(
 
 // Indices
 boocksSchema.index({ autor: 'text', editorial: 'text', categoria: 'text', genero: 'text' });
-boocksSchema.index({ titulo: 1 }, {unique: true});
 
 // Paginación
 boocksSchema.plugin(paginate);
