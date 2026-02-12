@@ -88,13 +88,13 @@
 
 .search-results-info {
     text-align: center;
-    color: #7f8c8d;
+    color: #000000;
     font-size: 0.95rem;
     margin: 0;
 }
 
 .pagination-info {
-    color: #7f8c8d;
+    color: #ffffff;
     margin-bottom: 1.5rem;
 }
 

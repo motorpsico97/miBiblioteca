@@ -7,7 +7,6 @@
 }
 
 .filters-sidebar {
-    background: #fafafa;
     border-radius: 8px;
     padding: 1.5rem;
     position: fixed;
@@ -30,12 +29,12 @@
 }
 
 .filters-sidebar::-webkit-scrollbar-thumb {
-    background: #7b68ee;
+    background: #464343;
     border-radius: 3px;
 }
 
 .filters-sidebar::-webkit-scrollbar-thumb:hover {
-    background: #5a4ebb;
+    background: #1d1c1c;
 }
 
 /* Header del sidebar */
@@ -50,13 +49,13 @@
 
 .filters-header h2 {
     font-size: 1.25rem;
-    color: #2c3e50;
+    color: #ffffff;
     margin: 0;
 }
 
 .clear-all-filters {
     font-size: 0.85rem;
-    color: #7b68ee;
+    color: #ffffff;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
@@ -70,6 +69,7 @@
 /* Secciones de filtros */
 .filter-section {
     margin-bottom: 2rem;
+
 }
 
 .filter-section:last-child {
@@ -78,7 +78,7 @@
 
 .filter-section h3 {
     font-size: 1rem;
-    color: #555;
+    color: #ffffff;
     margin: 0 0 1rem 0;
     font-weight: 600;
 }
@@ -171,7 +171,7 @@
 
 .search-results-info {
     text-align: center;
-    color: #666;
+    color: #000000;
     font-size: 0.95rem;
     margin: 0 0 0.75rem 0;
     padding: 1rem;
@@ -204,7 +204,7 @@
 
 .filter-label {
     font-size: 0.9rem;
-    color: #666;
+    color: #ffffff;
     font-weight: 500;
 }
 
